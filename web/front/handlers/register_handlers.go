@@ -1,22 +1,19 @@
 package handlers
 
 import (
-	"github.com/emicklei/go-restful/v3"
 	"github.com/geraldofigueiredo/goodtaste/web/front/handlers/order"
 	"github.com/geraldofigueiredo/goodtaste/web/front/service"
+	"github.com/labstack/echo/v4"
+	"go.uber.org/zap"
+	"net/http"
 )
 
-func RegisterHandlers(container *restful.Container, orderSvc service.OrderService) {
-	ws := new(restful.WebService)
+func RegisterHandlers(e *echo.Echo, orderSvc service.OrderService, logger *zap.SugaredLogger) {
+	e.GET("/", handlerOK)
 
-	ws.Route(ws.GET("/").To(handlerOK))
-	//ws.Consumes("application/json").Produces("application/json")
-
-	order.NewOrderHandler(ws, orderSvc)
-
-	container.Add(ws)
+	order.NewOrderHandler(e, orderSvc, logger)
 }
 
-func handlerOK(req *restful.Request, resp *restful.Response) {
-	_, _ = resp.Write([]byte("OK"))
+func handlerOK(c echo.Context) error {
+	return c.String(http.StatusOK, "Ok")
 }

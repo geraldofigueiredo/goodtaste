@@ -1,36 +1,26 @@
 package order
 
 import (
-	"fmt"
-	"github.com/emicklei/go-restful/v3"
 	"github.com/geraldofigueiredo/goodtaste/web/front/service"
+	"github.com/labstack/echo/v4"
+	"go.uber.org/zap"
 	"net/http"
 )
 
 type orderHandler struct {
 	orderSvc service.OrderService
+	logger   *zap.SugaredLogger
 }
 
-func NewOrderHandler(ws *restful.WebService, orderSvc service.OrderService) {
+func NewOrderHandler(e *echo.Echo, orderSvc service.OrderService, logger *zap.SugaredLogger) {
 	h := orderHandler{
 		orderSvc: orderSvc,
+		logger:   logger,
 	}
 
-	ws.Route(ws.POST("/order").
-		To(h.NewOrder),
-	)
-
-	ws.Route(ws.GET("/order").
-		To(h.NewOrder2),
-	)
+	e.POST("/order", h.NewOrder)
 }
 
-func (h *orderHandler) NewOrder(request *restful.Request, response *restful.Response) {
-	fmt.Println("newOrder - POST")
-	response.WriteHeader(http.StatusCreated)
-}
-
-func (h *orderHandler) NewOrder2(request *restful.Request, response *restful.Response) {
-	fmt.Println("newOrder - GET")
-	response.WriteHeader(http.StatusOK)
+func (h *orderHandler) NewOrder(c echo.Context) error {
+	return c.JSONBlob(http.StatusCreated, []byte("Ok"))
 }
