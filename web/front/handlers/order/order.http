@@ -1,0 +1,7 @@
+POST http://{{order-host}}/order
+
+###
+
+GET http://{{order-host}}/order
+
+###
