@@ -1,8 +1,8 @@
 package handlers
 
 import (
-	"github.com/geraldofigueiredo/goodtaste/web/front/handlers/order"
-	"github.com/geraldofigueiredo/goodtaste/web/front/service"
+	"github.com/geraldofigueiredo/goodtaste/services/web/front/handlers/order"
+	"github.com/geraldofigueiredo/goodtaste/services/web/front/service"
 	"github.com/labstack/echo/v4"
 	"go.uber.org/zap"
 	"net/http"
